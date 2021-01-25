@@ -3,21 +3,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
 class FirebasePushConnector extends PushConnector {
-  final firebase = FirebaseMessaging();
+  final firebaseMessaging = FirebaseMessaging.instance;
+  final firebasePushConnector = FirebasePushConnector();
 
   @override
   final isDisabledByUser = ValueNotifier(false);
 
   @override
   void configure({onMessage, onLaunch, onResume, onBackgroundMessage}) {
-    firebase.configure(
+
+    firebasePushConnector.configure(
       onMessage: onMessage,
       onLaunch: onLaunch,
       onResume: onResume,
       onBackgroundMessage: onBackgroundMessage,
     );
 
-    firebase.onTokenRefresh.listen((value) {
+    firebaseMessaging.onTokenRefresh.listen((value) {
       token.value = value;
     });
   }
@@ -27,7 +29,7 @@ class FirebasePushConnector extends PushConnector {
 
   @override
   void requestNotificationPermissions() {
-    firebase.requestNotificationPermissions();
+    firebaseMessaging.requestPermission();
   }
 
   @override
@@ -35,8 +37,8 @@ class FirebasePushConnector extends PushConnector {
 
   @override
   Future<void> unregister() async {
-    await firebase.setAutoInitEnabled(false);
-    await firebase.deleteInstanceID();
+    await firebaseMessaging.setAutoInitEnabled(false);
+    await firebaseMessaging.deleteInstanceID();
 
     token.value = null;
   }

@@ -12,6 +12,11 @@ dependencies:
     sdk: flutter
   firebase_messaging: ^8.0.0-dev.14
 
+  # https://pub.dev/packages/firebase_core
+  # license: BSD
+  firebase_core: ^0.7.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
